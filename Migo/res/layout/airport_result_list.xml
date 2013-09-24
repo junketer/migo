@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:orientation="horizontal" -->
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/airportName"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+   	</TextView>
+   	<!-- TextView 
+    android:id="@+id/airportIataCode"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+   	</TextView>
+   	<TextView 
+    android:id="@+id/airportIcaoCode"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+   	</TextView>
+   	<TextView 
+    android:id="@+id/airportCityName"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+   	</TextView>
+   	   	<TextView 
+    android:id="@+id/airportState"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+   	</TextView>
+   	
+   	   	<TextView 
+    android:id="@+id/airportCountry"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+   	</TextView>
+   	
+   	<TextView 
+    android:id="@+id/geoCode"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+   	</TextView>
+   		
+</LinearLayout-->

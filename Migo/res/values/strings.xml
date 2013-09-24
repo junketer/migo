@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, MIgoActivity!</string>
+    <string name="app_name">Migo</string>
+    <string name="lookupButtonLabel">Lookup</string>
+    <string name="carrierLookupButtonLabel">Lookup Carrier Code</string>
+    <string name="authFailure">Authentication failure</string>
+    <string name="lookupTypeRadioGroupLabel">Lookup Type</string>
+    <string name="carrierCdLookupButtonLabel">Carrier Code</string>
+    <string name="carrierNameLookupButtonLabel">Carrier Name</string>
+    <string name="airportCdLookupButtonLabel">Airport Code</string>
+    <string name="airportNameLookupButtonLabel">Airport name</string>
+    <string name="migo_logo_desc">Migo logo</string>
+    <string name="menu_monitor">Monitor</string>
+    <string name="menu_flights">Flights</string>
+    <string name="menu_news">News</string>
+    <string name="menu_alerts">Alerts</string>
+    <string name="menu_hotspots">Global Hotspots</string>
+    <string name="menu_item_key">item</string>
+    <string name="alert_data">alert_data</string>
+    <string name="alert_title_label">Title</string>
+    <string name="alert_item_id_key">alert_id</string>
+    <string name="alert_item_desc_key">alert_desc</string>
+
+    <color name="red">#FF0000</color>
+    <color name="amber">#FFA500</color>
+    <color name="green">#008000</color>
+
+    <string name="name_label">Name</string>
+    <string name="delayPercentage">Delay Percentage</string>
+    <string name="cancelPercentage">Cancel percentage</string>
+    <string name="percentage_sign">%</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <string-array name="drawer_list">
+        <item>Monitor</item>
+        <item>Flights</item>
+        <item>News</item>
+        <item>Alerts</item>
+        <item>Global Hotspots</item>
+    </string-array>
+
+    <string name="refresh_map">Refresh Map</string>
+
+</resources>
