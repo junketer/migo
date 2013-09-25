@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,7 +38,6 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -47,6 +47,9 @@ import com.oag.migo.network.LocationManagement;
 
 public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 
+	ProgressDialog mDialog=null;
+	Handler mHandler = null;
+	
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -107,9 +110,6 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 
 		checkAuthentication();
 
-		mLocationManagement = new LocationManagement();
-		mLocationManagement.onCreate(savedInstanceState, this);
-
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 /*		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>(
 				5);
@@ -156,6 +156,9 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
         mapFragment = new MigoMapFragment();
         addFragment(mapFragment,R.id.content_frame);
         mMap=mapFragment.getMap();
+
+        mLocationManagement = new LocationManagement();
+		mLocationManagement.onCreate(savedInstanceState, this);
 	}
 
 	@Override
@@ -185,12 +188,11 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 	    return true;
 	}
 
-	/*	@Override
+	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		// TODO Auto-generated method stub
 		return super.onMenuItemSelected(featureId, item);
 	}
-*/
+
 	@Override
 	public boolean onMenuOpened(int featureId, Menu menu) {
 		// TODO Auto-generated method stub
@@ -201,6 +203,7 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 
 		switch (menuId) {
 		case 0:
+			setMonitorFragment();
 			break;
 		case 1:
 			setFlightFragment();
@@ -244,7 +247,10 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 		updateMap();
 	}
 
-	private void updateMap() {
+	protected void updateMap() {
+		if (mMap==null) {
+			mMap = mapFragment.getMap();
+		}
 		try {
 			setMapMarkers(mLocationManagement.getLatitude(),
 					mLocationManagement.getLogitude());
@@ -339,6 +345,9 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 	}
 
 	private void addMapMarkers(JSONArray data) throws JSONException {
+		if (mMap==null) {
+			return;
+		}
 		radiusData = data;
 		MarkerOptions base = null;
 		for (int i = 0; i < data.length(); i++) {
@@ -505,20 +514,15 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 	}
 
 	private void setMonitorFragment() {
-		MapFragment f = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-		if (mMap == null) {
-			mMap = f.getMap();
+		if (mapFragment==null) {
+			mapFragment = new MigoMapFragment();
 		}
-		addFragment(f, R.id.content_frame);
-
+		mMap= mapFragment.getMap();
+		addFragment(mapFragment, R.id.content_frame);
 	}
 
 	private void setFlightFragment() {
-		if (mapFragment==null) {
-			mapFragment = new MigoMapFragment();
-			mMap= mapFragment.getMap();
-			addFragment(mapFragment, R.id.content_frame);
-		}
+
 	}
 
 	private void setNewsFragment() {
@@ -531,9 +535,37 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 	}
 
 	private void setHotspotFragment() {
+		GlobalHotspotsFragment f = new GlobalHotspotsFragment();
+		addFragment(f, R.id.content_frame);
+		
+/*		mDialog = new ProgressDialog(this);
+		mDialog.show();
+		new Thread(new Runnable(){
 
+			@Override
+			public void run() {
+				//DataLookup.lookupHotspots();
+				try {
+					Thread.sleep(500);
+					mHandler.post(new Runnable(){
+
+						@Override
+						public void run() {
+							dismissDialog();
+						}});
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}}).start();
+			*/
 	}
 
+	private void dismissDialog() {
+		if (mDialog!=null) {
+			mDialog.dismiss();
+		}
+	}
 	private void addFragment(Fragment f, int container) {
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager

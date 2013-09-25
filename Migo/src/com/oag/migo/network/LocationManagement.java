@@ -65,7 +65,7 @@ public class LocationManagement {
     @SuppressLint("NewApi")
     public void onCreate(Bundle savedInstanceState, Context context) {
         //context.setContentView(R.layout.main);
-
+    	
         // Restore apps state (if exists) after rotation.
         if (savedInstanceState != null) {
             mUseFine = savedInstanceState.getBoolean(KEY_FINE);
@@ -81,6 +81,10 @@ public class LocationManagement {
 
         // Get a reference to the LocationManager object.
         mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 120000, 20, listener);
+        Location loc = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        latitude= loc.getLatitude();
+        logitude=loc.getLongitude();
     }
 
     // Restores UI states after rotation.

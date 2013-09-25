@@ -106,7 +106,7 @@ public class AlertsFragment extends Fragment implements OnItemClickListener {
 				ja = mAlertData.getJSONArray("messageList");
 				for (int i = 0; i < ja.length(); i++) {
 					JSONObject alert = ja.getJSONObject(i);
-					data.add(getMap(alert));
+					data.add(populateMap(alert));
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -118,13 +118,13 @@ public class AlertsFragment extends Fragment implements OnItemClickListener {
 		int[] to= new int[2];
 		to[0]=R.id.alert_id;
 		to[1]=R.id.alert_description;
-		SimpleAdapter sa = new SimpleAdapter(getActivity(), data, R.layout.left_menu_item, from, to);
+		SimpleAdapter sa = new SimpleAdapter(getActivity(), data, R.layout.alerts_list_item, from, to);
 		mListView.setAdapter(sa);
 		mListView.setOnItemClickListener(this);
 	}
 
-	private HashMap<String,String> getMap(JSONObject alert) throws JSONException {
-		HashMap<String,String> map = new HashMap<String,String>();
+	private HashMap<String,String> populateMap(JSONObject alert) throws JSONException {
+		HashMap<String,String> map = new HashMap<String,String>(2);
 		map.put(getString(R.string.alert_item_id_key), alert.getString("id"));
 		map.put(getString(R.string.alert_item_desc_key), alert.getString("description"));
 		return map;
