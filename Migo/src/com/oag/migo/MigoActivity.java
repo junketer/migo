@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,15 +43,16 @@ import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.oag.migo.GlobalHotspotsFragment.GlobalHotspotListener;
 import com.oag.migo.LeftMenuFragment.LeftMenuSelectedListener;
 import com.oag.migo.network.DataLookup;
 import com.oag.migo.network.LocationManagement;
 
 public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 
-	ProgressDialog mDialog=null;
+	ProgressDialog mDialog = null;
 	Handler mHandler = null;
-	
+
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -107,28 +110,27 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_draw_layout);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
+		mHandler = new Handler();
 		checkAuthentication();
 
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-/*		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>(
-				5);
-		data.add(getMap(R.string.menu_item_key, R.string.menu_monitor));
-		data.add(getMap(R.string.menu_item_key, R.string.menu_flights));
-		data.add(getMap(R.string.menu_item_key, R.string.menu_news));
-		data.add(getMap(R.string.menu_item_key, R.string.menu_alerts));
-		data.add(getMap(R.string.menu_item_key, R.string.menu_hotspots));
-		String[] from = new String[1];
-		from[0] = getString(R.string.menu_item_key);
-		int[] to = new int[1];
-		to[0] = R.id.list_item;
-		SimpleAdapter sa = new SimpleAdapter(this, data,
-				R.layout.left_menu_item, from, to);
-		*/
+		/*
+		 * ArrayList<HashMap<String, String>> data = new
+		 * ArrayList<HashMap<String, String>>( 5);
+		 * data.add(getMap(R.string.menu_item_key, R.string.menu_monitor));
+		 * data.add(getMap(R.string.menu_item_key, R.string.menu_flights));
+		 * data.add(getMap(R.string.menu_item_key, R.string.menu_news));
+		 * data.add(getMap(R.string.menu_item_key, R.string.menu_alerts));
+		 * data.add(getMap(R.string.menu_item_key, R.string.menu_hotspots));
+		 * String[] from = new String[1]; from[0] =
+		 * getString(R.string.menu_item_key); int[] to = new int[1]; to[0] =
+		 * R.id.list_item; SimpleAdapter sa = new SimpleAdapter(this, data,
+		 * R.layout.left_menu_item, from, to);
+		 */
 		mSectionTitles = getResources().getStringArray(R.array.drawer_list);
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.left_menu_item, mSectionTitles));
-		//mDrawerList.setAdapter(sa);
+				R.layout.left_menu_item, mSectionTitles));
+		// mDrawerList.setAdapter(sa);
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
 				R.drawable.ic_drawer, R.string.drawer_open,
@@ -149,15 +151,15 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 			}
 		};
 		// Set the drawer toggle as the DrawerListener
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-        
-        mapFragment = new MigoMapFragment();
-        addFragment(mapFragment,R.id.content_frame);
-        mMap=mapFragment.getMap();
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
 
-        mLocationManagement = new LocationManagement();
+		mapFragment = new MigoMapFragment();
+		addFragment(mapFragment, R.id.content_frame);
+		mMap = mapFragment.getMap();
+
+		mLocationManagement = new LocationManagement();
 		mLocationManagement.onCreate(savedInstanceState, this);
 	}
 
@@ -176,16 +178,17 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		// If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        return super.onPrepareOptionsMenu(menu);
+		// If the nav drawer is open, hide action items related to the content
+		// view
+		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+		return super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.action_bar_menu, menu);
-	    return true;
+		inflater.inflate(R.menu.action_bar_menu, menu);
+		return true;
 	}
 
 	@Override
@@ -248,7 +251,7 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 	}
 
 	protected void updateMap() {
-		if (mMap==null) {
+		if (mMap == null) {
 			mMap = mapFragment.getMap();
 		}
 		try {
@@ -345,7 +348,7 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 	}
 
 	private void addMapMarkers(JSONArray data) throws JSONException {
-		if (mMap==null) {
+		if (mMap == null) {
 			return;
 		}
 		radiusData = data;
@@ -480,12 +483,12 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		 // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-          return true;
-        }
-        // Handle your other action bar items...
+		// Pass the event to ActionBarDrawerToggle, if it returns
+		// true, then it has handled the app icon touch event
+		if (mDrawerToggle.onOptionsItemSelected(item)) {
+			return true;
+		}
+		// Handle your other action bar items...
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -514,10 +517,10 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 	}
 
 	private void setMonitorFragment() {
-		if (mapFragment==null) {
+		if (mapFragment == null) {
 			mapFragment = new MigoMapFragment();
 		}
-		mMap= mapFragment.getMap();
+		mMap = mapFragment.getMap();
 		addFragment(mapFragment, R.id.content_frame);
 	}
 
@@ -537,40 +540,32 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 	private void setHotspotFragment() {
 		GlobalHotspotsFragment f = new GlobalHotspotsFragment();
 		addFragment(f, R.id.content_frame);
-		
-/*		mDialog = new ProgressDialog(this);
-		mDialog.show();
-		new Thread(new Runnable(){
 
-			@Override
-			public void run() {
-				//DataLookup.lookupHotspots();
-				try {
-					Thread.sleep(500);
-					mHandler.post(new Runnable(){
-
-						@Override
-						public void run() {
-							dismissDialog();
-						}});
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}}).start();
-			*/
+		/*
+		 * mDialog = new ProgressDialog(this); mDialog.show(); new Thread(new
+		 * Runnable(){
+		 * 
+		 * @Override public void run() { //DataLookup.lookupHotspots(); try {
+		 * Thread.sleep(500); mHandler.post(new Runnable(){
+		 * 
+		 * @Override public void run() { dismissDialog(); }}); } catch
+		 * (InterruptedException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); } }}).start();
+		 */
 	}
 
 	private void dismissDialog() {
-		if (mDialog!=null) {
+		if (mDialog != null) {
 			mDialog.dismiss();
 		}
 	}
+
 	private void addFragment(Fragment f, int container) {
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager
 				.beginTransaction();
 		fragmentTransaction.replace(container, f);
+		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
 	}
 
@@ -639,11 +634,14 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 		}
 		return null;
 	}
-	
-	private class DrawerItemClickListener implements ListView.OnItemClickListener {
-	    @Override
-	    public void onItemClick(AdapterView parent, View view, int position, long id) {
-	        selectItem(position);
-	    }
+
+	private class DrawerItemClickListener implements
+			ListView.OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView parent, View view, int position,
+				long id) {
+			selectItem(position);
+		}
 	}
+
 }

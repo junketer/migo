@@ -44,4 +44,10 @@
 
     <string name="refresh_map">Refresh Map</string>
 
+    <string name="airline_hotspot_name_label">Airline</string>
+    <string name="airport_hotspot_name_label">Airport</string>
+    <string name="hotspot_delayed_label">Delayed</string>
+    <string name="hotspot_cancelled_label">Cancelled</string>
+    <string name="hotspot_total_label">Total</string>
+    
 </resources>
