@@ -6,8 +6,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,7 +41,6 @@ import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.oag.migo.GlobalHotspotsFragment.GlobalHotspotListener;
 import com.oag.migo.LeftMenuFragment.LeftMenuSelectedListener;
 import com.oag.migo.network.DataLookup;
 import com.oag.migo.network.LocationManagement;
@@ -153,7 +150,7 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 		// Set the drawer toggle as the DrawerListener
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
+		//getActionBar().setHomeButtonEnabled(true);
 
 		mapFragment = new MigoMapFragment();
 		addFragment(mapFragment, R.id.content_frame);

@@ -83,8 +83,13 @@ public class LocationManagement {
         mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 120000, 20, listener);
         Location loc = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        latitude= loc.getLatitude();
-        logitude=loc.getLongitude();
+        if (loc==null) {
+        	loc = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        }
+        if (loc!=null) {
+        	latitude= loc.getLatitude();
+        	logitude=loc.getLongitude();
+        }
     }
 
     // Restores UI states after rotation.
