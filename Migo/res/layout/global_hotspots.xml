@@ -4,30 +4,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <Switch
-        android:id="@+id/hotspot_switch_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textOn="Airports"
-        android:textOff="Airlines"
-        android:onClick="switch" />
-    <ViewSwitcher
-        android:id="@+id/global_hotspot_view_switcher"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:animateFirstView="true"  >
+    <ToggleButton 
+	    android:id="@+id/hotspotToggle"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textOn="@string/airport_hotspot_name_label"
+	    android:textOff="@string/airline_hotspot_name_label"
+	    android:onClick="onHotspotToggleClicked"/>
 		      
         <ListView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/airport_hotspots_list">
         </ListView>    
         <ListView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/airline_hotspots_list">
+        android:id="@+id/airline_hotspots_list"
+        android:visibility="invisible">
         </ListView>    
-        </ViewSwitcher>
         
 
 </LinearLayout>

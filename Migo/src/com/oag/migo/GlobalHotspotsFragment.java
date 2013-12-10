@@ -17,18 +17,19 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Switch;
+import android.widget.ToggleButton;
 
 import com.oag.migo.network.DataLookup;
 
 public class GlobalHotspotsFragment extends Fragment {
 
-	Switch mSwitch;
+	ToggleButton mToggle;
 	ListView airportsList;
 	ListView airlineList;
 	JSONArray airlineData;
 	JSONArray airportData;
 	GlobalHotspotListener mListener=null;
-	Handler mHandler;
+	Handler mHandler=new Handler();
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,7 +38,8 @@ public class GlobalHotspotsFragment extends Fragment {
 			container.removeAllViews();
 		}
 		View v= inflater.inflate(R.layout.global_hotspots, container, false);
-		mSwitch=(Switch)v.findViewById(R.id.hotspot_switch_button);
+		mToggle=(ToggleButton)v.findViewById(R.id.hotspotToggle);
+		
 		airportsList=  (ListView) v.findViewById(R.id.airport_hotspots_list);
 		airlineList=  (ListView) v.findViewById(R.id.airline_hotspots_list);
 		return v;
@@ -142,9 +144,9 @@ public class GlobalHotspotsFragment extends Fragment {
 				airportData.length());
 		String[] from = new String[4];
 		from[0] = "airline";
-		from[1] = "flightsDelayed";
-		from[2] = "flightsCancelled";
-		from[3] = "flightsOnRoute";
+		from[1] = "departureDelaysPercentage";
+		from[2] = "departureCancellationsPercentage";
+		from[3] = "totalFlights";
 		int[] to = new int[4];
 		to[0] = R.id.airport_hotspot_name_value;
 		to[1] = R.id.airport_hotspot_delayed_value;
@@ -152,9 +154,9 @@ public class GlobalHotspotsFragment extends Fragment {
 		to[3] = R.id.airport_hotspot_total_value;
 
 		for (int i = 0; i < airportData.length(); i++) {
-			String cd = airportData.getJSONObject(i).getString("airlineCode");
+			String cd = airportData.getJSONObject(i).getString("airportCode");
 			String name = airportData.getJSONObject(i)
-					.getString("airlineCode");
+					.getString("airportCode");
 			String flightsDelayed = airportData.getJSONObject(i).getString(
 					from[1]);
 			String flightsCancelled = airportData.getJSONObject(i).getString(
@@ -173,4 +175,17 @@ public class GlobalHotspotsFragment extends Fragment {
 		airportsList.setAdapter(airportAdapter);
 	}
 
+	public void onToggleClicked(View view) {
+	    // Is the toggle on?
+	    boolean on = ((ToggleButton) view).isChecked();
+	    
+	    if (on) {
+	    	airlineList.setVisibility(View.INVISIBLE);
+	        airportsList.setVisibility(View.VISIBLE);
+	    } else {
+	        airlineList.setVisibility(View.VISIBLE);
+	        airportsList.setVisibility(View.INVISIBLE);
+	        
+	    }
+	}
 }

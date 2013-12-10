@@ -34,6 +34,7 @@ import android.widget.RadioButton;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,6 +42,7 @@ import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.oag.migo.GlobalHotspotsFragment.GlobalHotspotListener;
 import com.oag.migo.LeftMenuFragment.LeftMenuSelectedListener;
 import com.oag.migo.network.DataLookup;
 import com.oag.migo.network.LocationManagement;
@@ -101,6 +103,8 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 	private ActionBarDrawerToggle mDrawerToggle;
 	private String[] mSectionTitles;
 
+	GlobalHotspotListener hotSpotListener=null;
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -641,4 +645,10 @@ public class MigoActivity extends Activity implements LeftMenuSelectedListener {
 		}
 	}
 
+	public void onHotspotToggleClicked(View view) {
+		Fragment f = getFragmentManager().findFragmentById(R.id.content_frame);
+		if (f!=null) {
+			((GlobalHotspotsFragment)f).onToggleClicked(view);
+		}
+	}
 }

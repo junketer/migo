@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <style name="redMapWindow">
         <item name="android:textColor">#FF0000</item>
     </style>
@@ -9,5 +9,29 @@
     <style name="greenMapWindow">
         <item name="android:textColor">#008000</item>
     </style>
+    <color name="left_menu_list_bgcolor">#000000</color>
     
+    <style name="left_menu">
+        <item name="android:background">@color/amber</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+    
+     <style name="left_menu_item">
+        <item name="android:background">@color/amber</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    
+     <style name="hotspot_list_label_item">
+         <item name="android:textStyle">bold</item>
+         <item name="android:textSize">15sp</item>
+         <item name="android:padding">5dp</item>
+     </style>
+     <style name="hotspot_list_value_item">
+         <item name="android:textStyle">normal</item>
+         <item name="android:textSize">15sp</item>
+         <item name="android:padding">5dp</item>
+     </style>
+     
 </resources>
